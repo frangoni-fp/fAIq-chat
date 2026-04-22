@@ -1,0 +1,45 @@
+import { useEffect, useState } from 'react'
+import MessageIndicator from '../message/MessageIndicator'
+import { type DeliveryStatus, type MessageRole } from '../../api/useChatApi'
+
+function formatTimeHHMM(date: Date): string {
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  return `${hours}:${minutes}`
+}
+
+interface MessageBubbleProps {
+  content: string
+  role: MessageRole
+  timestamp: Date
+  deliveryStatus?: DeliveryStatus
+}
+
+export const MessageBubble = ({ content, role, timestamp, deliveryStatus }: MessageBubbleProps) => {
+  const [isEntering, setIsEntering] = useState(false)
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setIsEntering(true))
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  const bubbleclasses = [
+    'message-bubble',
+    role === 'user' ? 'message-sent' : 'message-received',
+    isEntering ? 'is-entering' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return (
+    <div className={bubbleclasses}>
+      <div className="message-text">{content}</div>
+      <div className="message-indicators">
+        <time dateTime={timestamp.toISOString()}>{formatTimeHHMM(timestamp)}</time>
+        {role === 'user' && <MessageIndicator status={deliveryStatus ?? 'pending'} />}
+      </div>
+    </div>
+  )
+}

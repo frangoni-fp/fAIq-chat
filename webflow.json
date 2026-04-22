@@ -1,0 +1,16 @@
+{
+  "library": {
+    "name": "AI Support Chat",
+    "components": ["./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"],
+    "description": "",
+    "id": "ai-support-chat",
+    "globals": "./src/globals.ts"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1773926414733,
+      "version": "1.13.0"
+    }
+  }
+}
