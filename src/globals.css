@@ -119,6 +119,35 @@ img {
   align-self: stretch;
 }
 
+.agent-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #25d366;
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.agent-cta:hover {
+  background-color: #20bd5a;
+}
+
+.agent-cta:focus-visible {
+  outline: 2px solid #075e54;
+  outline-offset: 2px;
+}
+
 .message-text {
   margin-left: auto;
 }
@@ -153,7 +182,7 @@ img {
 .chat-bottom {
   grid-column-gap: 0.5rem;
   grid-row-gap: 0.5rem;
-  background-color: var(--_apps---colors--popover);
+  background-color: var(--felix-oficial---surfaces--stone);
   color: var(--felix-oficial---content--slate-50);
   justify-content: space-between;
   align-items: center;
@@ -211,7 +240,7 @@ img {
 .chat-input {
   grid-column-gap: 0.25rem;
   grid-row-gap: 0.25rem;
-  background-color: var(--_apps---colors--background);
+  background-color: var(--felix-oficial---surfaces--white);
   border-radius: 1rem;
   flex: 1;
   min-width: 0;

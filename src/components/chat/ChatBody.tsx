@@ -1,6 +1,6 @@
 import React from 'react'
 import { MessageBubble } from '../message/MessageBubble'
-import type { ChatMessage } from '../../api/useChatApi'
+import type { ChatMessage } from '../../api/types'
 
 interface ChatBodyProps {
   messages: ChatMessage[]
@@ -14,10 +14,12 @@ export default function ChatBody({ messages, error, messagesContainerRef }: Chat
       {messages.map((msg) => (
         <MessageBubble
           key={msg.id}
-          content={msg.content}
+          content={msg.answer}
           role={msg.role}
           timestamp={msg.timestamp}
           deliveryStatus={msg.deliveryStatus}
+          outcome={msg.outcome}
+          cta={msg.cta}
         />
       ))}
       {error && (

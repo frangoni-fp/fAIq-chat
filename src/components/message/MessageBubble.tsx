@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import MessageIndicator from '../message/MessageIndicator'
-import { type DeliveryStatus, type MessageRole } from '../../api/useChatApi'
+import { type CTA, type DeliveryStatus, type MessageRole, type Outcome } from '../../api/types'
+import { AgentCTA } from './AgentCTA'
 
 function formatTimeHHMM(date: Date): string {
   const hours = date.getHours().toString().padStart(2, '0')
@@ -13,9 +14,11 @@ interface MessageBubbleProps {
   role: MessageRole
   timestamp: Date
   deliveryStatus?: DeliveryStatus
+  outcome?: Outcome
+  cta: CTA | null
 }
 
-export const MessageBubble = ({ content, role, timestamp, deliveryStatus }: MessageBubbleProps) => {
+export const MessageBubble = ({ content, role, timestamp, deliveryStatus, cta }: MessageBubbleProps) => {
   const [isEntering, setIsEntering] = useState(false)
 
   useEffect(() => {
@@ -40,6 +43,8 @@ export const MessageBubble = ({ content, role, timestamp, deliveryStatus }: Mess
         <time dateTime={timestamp.toISOString()}>{formatTimeHHMM(timestamp)}</time>
         {role === 'user' && <MessageIndicator status={deliveryStatus ?? 'pending'} />}
       </div>
+      {cta && cta.action === 'OPEN_WHATSAPP' && <AgentCTA label={cta.label} />}
+      {/* {cta && cta.action === 'OPEN_CALCULATOR' && <CalculatorCTA label={cta.label} />} */}
     </div>
   )
 }

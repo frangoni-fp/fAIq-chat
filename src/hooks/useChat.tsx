@@ -28,25 +28,6 @@ export default function useChat(apiEndpoint: string) {
     async (text: string) => {
       const trimmed = text.trim()
 
-      if (trimmed === '/gabidance') {
-        const content = (
-          <img
-            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWU0a3hmYm8zNWUyb2RrNnRvd2U0anBwYTcyeWp4Nnd0dWNyanF5YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/m1DsyusMWM7uYhMMH5/giphy.gif"
-            alt="Gabidance"
-          />
-        ) as unknown as string
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: generateId(),
-            content,
-            role: 'assistant',
-            timestamp: new Date(),
-          },
-        ])
-        return
-      }
-
       if (!trimmed || isLoading || !isEndpointValid) return
 
       audioRef.current?.play()?.catch(() => {})
@@ -55,10 +36,13 @@ export default function useChat(apiEndpoint: string) {
 
       const userMessage: ChatMessage = {
         id: generateId(),
-        content: trimmed,
+        answer: trimmed,
         role: 'user',
         timestamp: new Date(),
         deliveryStatus: 'pending',
+        outcome: 'user_message',
+        cta: null,
+        error: null,
       }
       setMessages((prev) => [...prev, userMessage])
       setIsLoading(true)
@@ -81,12 +65,16 @@ export default function useChat(apiEndpoint: string) {
 
         const assistantMessage: ChatMessage = {
           id: generateId(),
-          content: response.answer,
+          answer: response.answer,
           role: 'assistant',
           timestamp: new Date(),
+          outcome: response.outcome,
+          cta: response.cta,
+          error: response.error,
         }
         setMessages((prev) => [...prev, assistantMessage])
       } catch (err) {
+        //review error handling for production
         const apiError = err as ChatApiError
         const message =
           apiError.type === 'network'
