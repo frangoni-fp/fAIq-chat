@@ -14,7 +14,6 @@ export default function useChat(apiEndpoint: string) {
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [sessionId, setSessionId] = useState<string>('')
-  console.log('sessionId', sessionId)
 
   const scrollToBottom = useCallback(() => {
     const el = messagesContainerRef.current
