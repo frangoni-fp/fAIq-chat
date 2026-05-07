@@ -13,6 +13,8 @@ export default function useChat(apiEndpoint: string) {
   const abortRef = useRef<AbortController | null>(null)
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [sessionId, setSessionId] = useState<string>('')
+  console.log('sessionId', sessionId)
 
   const scrollToBottom = useCallback(() => {
     const el = messagesContainerRef.current
@@ -57,11 +59,17 @@ export default function useChat(apiEndpoint: string) {
           )
         }, 500)
 
-        const { response } = await sendChatMessage(apiEndpoint, trimmed, abortRef.current.signal)
+        const { response } = await sendChatMessage({
+          endpoint: apiEndpoint,
+          question: trimmed,
+          signal: abortRef.current.signal,
+          sessionId,
+        })
 
         setMessages((prev) =>
           prev.map((m) => (m.id === userMessage.id ? { ...m, deliveryStatus: 'delivered' as const } : m)),
         )
+        setSessionId(response.session_id)
 
         const assistantMessage: ChatMessage = {
           id: generateId(),

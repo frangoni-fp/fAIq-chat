@@ -1,7 +1,7 @@
 export type MessageRole = 'user' | 'assistant'
 export type DeliveryStatus = 'pending' | 'sent' | 'delivered'
 
-export interface ChatMessage extends ChatApiResponse {
+export interface ChatMessage extends Omit<ChatApiResponse, 'session_id'> {
   id: string
   deliveryStatus?: DeliveryStatus
   role: MessageRole
@@ -23,6 +23,7 @@ export interface CTA {
   preselect_country: string | null
 }
 export interface ChatApiResponse {
+  session_id: string
   outcome: Outcome
   answer: string
   cta: CTA | null
