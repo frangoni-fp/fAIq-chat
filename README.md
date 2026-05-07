@@ -13,6 +13,7 @@ It is meant to sit in front of an **AI support or Q&A server**—typically one t
 ## Features
 
 - Message list with auto-scroll
+- Conversational **`session_id`**: the client sends an empty id on the first message, stores `session_id` from the API response, and includes it on later messages (see **Backend contract**)
 - Send state, delivery-style status on the user bubble, and inline error display when the API fails
 - Optional sound on send (hosted asset referenced in `App.tsx`)
 - Webflow Designer prop: **API Endpoint** (`apiEndpoint`) — the component does not send requests until this URL is set (trimmed non-empty string)
@@ -39,38 +40,66 @@ The client calls your AI / knowledge-base API with:
 
 - **Method:** `POST`
 - **Headers:** `Content-Type: application/json`
-- **Body:** `{ "question": "<user message>" }`
+- **Body:** `{ "question": "<user message>", "session_id": "<session id>" }`
 
-Respond with **HTTP 200** and a JSON **object** shaped like `ChatApiResponse` in `src/api/types.ts`. The chat bubble shows **`answer`**; other fields are available for your product (outcomes, CTAs, server-side errors) and can be wired up in the UI later.
+**Session flow**
 
-| Field | Type | Notes |
-|--------|------|--------|
-| `outcome` | string | One of: `faq_answer`, `trigger_cta`, `other_cta`, `issue_cta` |
-| `answer` | string | **Required for the visible reply** — assistant message text |
-| `cta` | object or `null` | Optional: `{ "action": "OPEN_CALCULATOR" \| "OPEN_WHATSAPP", "label": string, "preselect_country": string \| null }` |
-| `error` | string or `null` | Optional server-side message (not automatically shown in the chat today unless you use it in the hook) |
+- The **first** message in a conversation is sent with `session_id` as an **empty string** (`""`). Your server should create a session, include a **new** `session_id` in the JSON response, and use it to correlate later turns (memory, tools, or billing).
+- **Every subsequent** request from the client repeats the **`session_id` value from the last successful assistant response**. Your API must accept that id and treat it as the same conversation.
 
-Example success body:
+Respond with **HTTP 200** and a JSON **object** shaped like `ChatApiResponse` in `src/api/types.ts`. The chat bubble shows **`answer`**; other fields drive CTAs, outcomes, and optional server-side messages.
+
+| Field | Direction | Type | Notes |
+|--------|-----------|------|--------|
+| `question` | Request | string | The user’s latest message |
+| `session_id` | Request | string | Empty on first message; afterwards, copy from the previous response’s `session_id` |
+| `session_id` | Response | string | Stable id for this conversation; returned on every assistant reply |
+| `outcome` | Response | string | One of: `faq_answer`, `trigger_cta`, `other_cta`, `issue_cta`, `user_message` |
+| `answer` | Response | string | **Required for the visible reply** — assistant message text |
+| `cta` | Response | object or `null` | `{ "action": "OPEN_CALCULATOR" \| "OPEN_WHATSAPP", "label": string, "preselect_country": string \| null }` |
+| `error` | Response | string or `null` | Optional server-side message (not automatically shown in the chat UI unless you wire it) |
+
+Example request (first message in the thread — note empty `session_id`):
 
 ```json
 {
+  "question": "¿Cómo puedo mandar plata a México?",
+  "session_id": ""
+}
+```
+
+Example response:
+
+```json
+{
+  "session_id": "sess_01k9abcdexample",
   "outcome": "faq_answer",
-  "answer": "You can reset your password from Account settings → Security.",
+  "answer": "Para enviar dinero a México puedes usar la app o la web: elige destino México, monto y método de pago. Si querés, decime desde qué país enviás y te indico tarifas y tiempos.",
   "cta": null,
   "error": null
 }
 ```
 
-Example with a CTA:
+Example request **follow-up** in the same conversation (reuse `session_id` from the previous response):
 
 ```json
 {
+  "question": "¿Cuánto tarda en llegar?",
+  "session_id": "sess_01k9abcdexample"
+}
+```
+
+Example response with a CTA:
+
+```json
+{
+  "session_id": "sess_01k9abcdexample",
   "outcome": "trigger_cta",
-  "answer": "For a custom quote, open the calculator.",
+  "answer": "Para tu caso conviene cotizar el envío con la calculadora y elegir México como destino.",
   "cta": {
     "action": "OPEN_CALCULATOR",
-    "label": "Open calculator",
-    "preselect_country": "US"
+    "label": "Abrir calculadora",
+    "preselect_country": "MX"
   },
   "error": null
 }
