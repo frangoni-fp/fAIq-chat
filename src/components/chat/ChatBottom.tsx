@@ -6,7 +6,7 @@ interface ChatBottomProps {
   disabled?: boolean
 }
 
-export const ChatBottom = ({ onSend, disabled = false }: ChatBottomProps) => {
+const ChatBottom = ({ onSend, disabled = false }: ChatBottomProps) => {
   const [inputValue, setInputValue] = useState('')
 
   const handleSubmit = useCallback(() => {
@@ -56,3 +56,5 @@ export const ChatBottom = ({ onSend, disabled = false }: ChatBottomProps) => {
     </div>
   )
 }
+
+export default ChatBottom

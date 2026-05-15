@@ -20,7 +20,7 @@ export type Action = 'OPEN_CALCULATOR' | 'OPEN_WHATSAPP'
 export interface CTA {
   action: Action
   label: string
-  preselect_country: string | null
+  preselect_country?: string
 }
 export interface ChatApiResponse {
   session_id: string

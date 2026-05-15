@@ -1,8 +1,6 @@
-import ChatBody from './components/chat/ChatBody'
-import { ChatBottom } from './components/chat/ChatBottom'
-import { ChatHeader } from './components/chat/ChatHeader'
 import './globals.css'
 import useChat from './hooks/useChat'
+import { ChatHeader, ChatBody, ChatBottom } from './components/chat'
 
 interface ChatProps {
   apiEndpoint: string

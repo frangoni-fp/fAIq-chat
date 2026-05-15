@@ -1,11 +1,11 @@
-import { type DeliveryStatus } from '../../api/useChatApi'
+import { type DeliveryStatus } from '../../api/types'
 import CHAT_ICONS from '../_icons'
 
 interface MessageIndicatorProps {
   status: DeliveryStatus
 }
 
-export default function MessageIndicator({ status }: MessageIndicatorProps) {
+const MessageIndicator = ({ status }: MessageIndicatorProps) => {
   const isActive = status === 'delivered'
   const showClock = status === 'pending'
   const showTick = status === 'sent' || status === 'delivered'
@@ -17,3 +17,5 @@ export default function MessageIndicator({ status }: MessageIndicatorProps) {
     </div>
   )
 }
+
+export default MessageIndicator

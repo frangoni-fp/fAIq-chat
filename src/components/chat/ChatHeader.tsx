@@ -1,4 +1,4 @@
-export const ChatHeader = ({ isLoading }: { isLoading: boolean }) => {
+const ChatHeader = ({ isLoading }: { isLoading: boolean }) => {
   return (
     <div className="chat-header">
       <div className="chat-header_profile-wrapper">
@@ -24,3 +24,5 @@ export const ChatHeader = ({ isLoading }: { isLoading: boolean }) => {
     </div>
   )
 }
+
+export default ChatHeader

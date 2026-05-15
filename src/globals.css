@@ -119,12 +119,12 @@ img {
   align-self: stretch;
 }
 
-.agent-cta {
+.cta-button {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   padding: 0.5rem 0.875rem;
   border-radius: 999px;
   border: none;
@@ -139,11 +139,11 @@ img {
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.agent-cta:hover {
+.cta-button:hover {
   background-color: #20bd5a;
 }
 
-.agent-cta:focus-visible {
+.cta-button:focus-visible {
   outline: 2px solid #075e54;
   outline-offset: 2px;
 }

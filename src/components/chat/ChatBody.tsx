@@ -1,5 +1,5 @@
 import React from 'react'
-import { MessageBubble } from '../message/MessageBubble'
+import { MessageBubble } from '../message'
 import type { ChatMessage } from '../../api/types'
 
 interface ChatBodyProps {
@@ -8,7 +8,7 @@ interface ChatBodyProps {
   messagesContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-export default function ChatBody({ messages, error, messagesContainerRef }: ChatBodyProps) {
+const ChatBody = ({ messages, error, messagesContainerRef }: ChatBodyProps) => {
   return (
     <div className="chat-messages" ref={messagesContainerRef}>
       {messages.map((msg) => (
@@ -30,3 +30,5 @@ export default function ChatBody({ messages, error, messagesContainerRef }: Chat
     </div>
   )
 }
+
+export default ChatBody
