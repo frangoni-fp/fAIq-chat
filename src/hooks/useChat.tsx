@@ -13,6 +13,7 @@ export default function useChat(apiEndpoint: string) {
   const abortRef = useRef<AbortController | null>(null)
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioReceivedRef = useRef<HTMLAudioElement | null>(null)
   const [sessionId, setSessionId] = useState<string>('')
 
   const scrollToBottom = useCallback(() => {
@@ -80,6 +81,7 @@ export default function useChat(apiEndpoint: string) {
           error: response.error,
         }
         setMessages((prev) => [...prev, assistantMessage])
+        audioReceivedRef.current?.play()?.catch(() => {})
       } catch (err) {
         //review error handling for production
         const apiError = err as ChatApiError
@@ -98,7 +100,7 @@ export default function useChat(apiEndpoint: string) {
     [apiEndpoint, isLoading, isEndpointValid],
   )
 
-  return { messages, error, isLoading, handleSend, messagesContainerRef, audioRef, isEndpointValid }
+  return { messages, error, isLoading, handleSend, messagesContainerRef, audioRef, audioReceivedRef, isEndpointValid }
 }
 
 export type UseChatReturn = ReturnType<typeof useChat>

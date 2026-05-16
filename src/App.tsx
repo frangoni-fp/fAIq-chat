@@ -7,7 +7,7 @@ interface ChatProps {
 }
 
 export const Chat = ({ apiEndpoint }: ChatProps) => {
-  const { messages, isLoading, error, handleSend, messagesContainerRef, audioRef, isEndpointValid } =
+  const { messages, isLoading, error, handleSend, messagesContainerRef, audioRef, audioReceivedRef, isEndpointValid } =
     useChat(apiEndpoint)
 
   return (
@@ -18,6 +18,11 @@ export const Chat = ({ apiEndpoint }: ChatProps) => {
       <audio
         ref={audioRef}
         src="https://cdn.prod.website-files.com/663a7abd629bfe97ec950c50/69397d82f56458b7d340c2ca_sent.mp3"
+        preload="auto"
+      />
+      <audio
+        ref={audioReceivedRef}
+        src="https://cdn.prod.website-files.com/663a7abd629bfe97ec950c50/6a0850f44d8b09199917fa6f_wp-receive.mp3"
         preload="auto"
       />
     </div>
