@@ -19,6 +19,7 @@ export async function sendChatMessage({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify({ question, session_id: sessionId }),
       signal,

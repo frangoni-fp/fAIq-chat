@@ -24,3 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 
+
+package-lock.json
+
+bubble.html

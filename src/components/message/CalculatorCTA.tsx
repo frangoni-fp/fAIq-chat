@@ -8,13 +8,13 @@ interface CalculatorCTAProps {
 const mapCountryToCode: Record<string, string> = {
   colombia: 'co',
   mexico: 'mx',
-  perú: 'pe',
+  peru: 'pe',
   ecuador: 'ec',
   nicaragua: 'ni',
   honduras: 'hn',
   'el salvador': 'sv',
   guatemala: 'gt',
-  'república dominicana': 'do',
+  'republica dominicana': 'do',
 }
 
 const DEFAULT_COUNTRY_CODE = 'mx'
